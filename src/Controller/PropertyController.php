@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PropertyController extends AbstractController
 {
     /**
-     * @Route("/property", name="app_property")
+     * @Route("api/property", name="app_property")
      */
     public function index(): JsonResponse
     {

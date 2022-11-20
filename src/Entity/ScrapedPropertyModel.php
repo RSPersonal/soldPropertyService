@@ -6,17 +6,21 @@ use App\Repository\ScrapedPropertyModelRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
+ * @ORM\Table(name="soldProperty")
  * @ORM\Entity(repositoryClass=ScrapedPropertyModelRepository::class)
+ * @ApiResource
  */
 class ScrapedPropertyModel
 {
-    /** Documentation https://symfony.com/doc/current/components/uid.html
+    /**
      * @ORM\Id
-     * @ORM\Column(type: 'uuid', unique: true)
-     * @ORM\GeneratedValue(strategy: 'CUSTOM')
-     * @ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="doctrine.uuid_generator")
+     *
      */
     private $id;
 
