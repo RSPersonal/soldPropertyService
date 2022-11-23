@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\ScrapedPropertyModel;
 use App\Repository\ScrapedPropertyModelRepository;
+use PHPUnit\Util\Json;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -60,5 +61,47 @@ class PropertyController extends AbstractController
             'typeOfProperty' => $property->getTypeOfProperty(),
         ];
         return new JsonResponse($data, Response::HTTP_OK);
+    }
+
+    /**
+     * @Route("api/v1/property/{range}/{zipcode}", name="app_property_get_by_range")
+     * @method ("GET")
+     * @param int $range
+     * @param string $zipcode
+     * @param ScrapedPropertyModelRepository $scrapedPropertyModelRepository
+     * @return JsonResponse
+     */
+    public function getPropertiesInRange(int $range, string $zipcode, ScrapedPropertyModelRepository $scrapedPropertyModelRepository): JsonResponse
+    {
+        $zipcodeRange = self::getZipcodeRange($range, $zipcode);
+        $fetchedProperties = $scrapedPropertyModelRepository->findPropertiesInRange($zipcodeRange);
+        $data = [
+            'message' => 'success',
+            'status' => 200,
+            'data' => $fetchedProperties,
+            'info' => null
+        ];
+
+        if (empty($fetchedProperties)) {
+            $data['info'] = [
+                'message' => 'No properties found with given range.',
+                'range' => $range,
+                'zipcodeRange' => $zipcodeRange
+            ];
+        }
+
+        return new JsonResponse($data, Response::HTTP_OK);
+    }
+
+    /**
+     * @param int $range
+     * @param string $zipcode
+     * @return array
+     */
+    private static function getZipcodeRange(int $range, string $zipcode): array
+    {
+        $zipCodeRange = [$zipcode];
+        $response = '';
+        return $zipCodeRange;
     }
 }
