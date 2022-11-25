@@ -57,10 +57,12 @@ class ScrapedPropertyModelRepository extends ServiceEntityRepository
 
     /**
      * @param array $zipcode
-     * @return array|float|int|mixed|string
+     * @return array|float|int|string
      */
     public function findPropertiesInRange(array $zipcode)
     {
+        // TODO create unittest
+
         $properties = [];
         if (empty($zipcode)){
             return $properties;

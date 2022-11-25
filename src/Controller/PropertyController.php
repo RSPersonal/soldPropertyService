@@ -100,8 +100,11 @@ class PropertyController extends AbstractController
      */
     private static function getZipcodeRange(int $range, string $zipcode): array
     {
-        $zipCodeRange = [$zipcode];
-        $response = '';
-        return $zipCodeRange;
+        // TODO create unittest
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, "postcode.vanvulpen.nl/afstand/$zipcode/$range/");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $fetchedRange = curl_exec($curl);
+        return json_decode($fetchedRange);
     }
 }

@@ -31,7 +31,8 @@
         "symfony/uid": "5.4.*",
         "symfony/validator": "5.4.*",
         "symfony/yaml": "5.4.*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-curl": "*"
     },
     "config": {
         "allow-plugins": {
