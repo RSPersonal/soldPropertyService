@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\ScrapedPropertyModel;
 use App\Repository\ScrapedPropertyModelRepository;
+use Exception;
 use PHPUnit\Util\Json;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function PHPUnit\Framework\throwException;
 
 class PropertyController extends AbstractController
 {
@@ -97,6 +99,7 @@ class PropertyController extends AbstractController
      * @param int $range
      * @param string $zipcode
      * @return array
+     * @throws Exception
      */
     private static function getZipcodeRange(int $range, string $zipcode): array
     {
@@ -104,7 +107,12 @@ class PropertyController extends AbstractController
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, "postcode.vanvulpen.nl/afstand/$zipcode/$range/");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $fetchedRange = curl_exec($curl);
+
+        try {
+            $fetchedRange = curl_exec($curl);
+        } catch (Exception $e) {
+            throw new Exception('Connection error. Check api call.', $e);
+        }
         return json_decode($fetchedRange);
     }
 }
